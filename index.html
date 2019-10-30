@@ -46,27 +46,13 @@
                         </tr>
                     </thead>
                     <tbody>
-                        <tr>
+                        <!-- <tr>
                             <th scope="row">1</th>
                             <td>Mark</td>
                             <td>Otto</td>
                             <td>@mdo</td>
                             <td>@mdo</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">2</th>
-                            <td>Jacob</td>
-                            <td>Thornton</td>
-                            <td>@fat</td>
-                            <td>@fat</td>
-                        </tr>
-                        <tr>
-                            <th scope="row">3</th>
-                            <td>Larry</td>
-                            <td>the Bird</td>
-                            <td>@twitter</td>
-                            <td>@twitter</td>
-                        </tr>
+                        </tr> -->
                     </tbody>
                 </table>
             </div>
@@ -188,6 +174,50 @@
                 dateAdded: firebase.database.ServerValue.TIMESTAMP
             })
         };
+
+        database.ref().on("child_added", function (snapshot) {
+            var sv = snapshot.val();
+
+            console.log(sv.name);
+            console.log(sv.destination);
+            console.log(sv.firsttime);
+            console.log(sv.frequency);
+
+            var newTr = $("<tr>");
+
+            var newTdCarrier = $("<td>");
+            newTdCarrier.text(sv.name);
+            newTr.append(newTdCarrier);
+
+            var newTdDestination = $("<td>");
+            newTdDestination.text(sv.destination);
+            newTr.append(newTdDestination);
+
+            var newTdFreq = $("<td>");
+            newTdFreq.text(sv.frequency);
+            newTr.append(newTdFreq);
+
+            ////////////////////
+
+            // Current time converted to military format
+            var currentTime = moment().format("HH:mm");
+            console.log("Military Time: " + currentTime);
+
+            // Math for Next Train Time
+
+            var newTdNextTrain = $("<td>");
+            newTdNextTrain.text("99:99");
+            newTr.append(newTdNextTrain);
+
+            // Math for Mins Away of Next Train
+
+            var newTdMinsAway = $("<td>");
+            newTdMinsAway.text("X Mins");
+            newTr.append(newTdMinsAway);
+
+            $("tbody").append(newTr);
+
+        });
 
     </script>
 
