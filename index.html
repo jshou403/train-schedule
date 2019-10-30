@@ -5,7 +5,7 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <meta http-equiv="X-UA-Compatible" content="ie=edge">
-    <title>Index.html Template</title>
+    <title>Philadelphia, PA - Outbound Train Schedule (Provided by JS & JS)</title>
 
     <!-- Bootstrap CSS -->
     <link rel="stylesheet" href="https://stackpath.bootstrapcdn.com/bootstrap/4.3.1/css/bootstrap.min.css"
@@ -26,8 +26,8 @@
 
         <!-- Header -->
         <div class="card card-title bg-light pt-4 pb-4 border-warning text-center mt-3">
-            <h2>Train Schedule</h2>
-            <h6>Choo choo. Chee chee.</h6>
+            <h2>Philadelphia, PA</h2>
+            <h6>Outbound Trains to Major East Coast Cities</h6>
         </div>
 
         <!-- Schedule Container -->
@@ -35,12 +35,12 @@
             <div class="card-header bg-warning">Current Train Schedule</div>
             <div class="card-body text-dark">
                 <!-- Table -->
-                <table class="table table-striped table-sm">
+                <table class="table table-striped">
                     <thead>
                         <tr>
-                            <th scope="col">Train Name</th>
+                            <th scope="col">Carrier Name</th>
                             <th scope="col">Destination</th>
-                            <th scope="col">Frequency (mins)</th>
+                            <th scope="col">Frequency (Mins)</th>
                             <th scope="col">Next Arrival</th>
                             <th scope="col">Minutes Away</th>
                         </tr>
@@ -74,15 +74,15 @@
 
         <!-- Add Train Container -->
         <div class="card border-warning mb-3">
-            <div class="card-header bg-warning">Add Train</div>
+            <div class="card-header bg-warning">Schedule New Train</div>
             <div class="card-body text-dark">
-                <!-- Add Train Form -->
+                <!-- New Train Form -->
                 <form>
 
                     <div class="form-group row">
-                        <!-- Label 1 - Train Name -->
-                        <label for="train-name" class="col-sm-2 col-form-label">Train Name</label>
-                        
+                        <!-- Label 1 - Train Carrier Name -->
+                        <label for="carrier-name" class="col-sm-2 col-form-label">Carrier</label>
+
                         <!-- Input id = "train-name-input" -->
                         <div class="col-sm-10">
                             <input type="text" class="form-control" id="train-name-input">
@@ -123,7 +123,7 @@
                     </div>
 
                     <!-- Submit Form Button -->
-                    <button class="btn btn-warning">Add New Train</button>
+                    <button id="submit-button" class="btn btn-warning">Add New</button>
 
                 </form>
             </div>
@@ -142,7 +142,52 @@
 
     <script>
 
+        var firebaseConfig = {
+            apiKey: "AIzaSyD03ruMPpiPPkzIaN4mEkTuyiTxM3osSdg",
+            authDomain: "myfirstappomg.firebaseapp.com",
+            databaseURL: "https://myfirstappomg.firebaseio.com",
+            projectId: "myfirstappomg",
+            storageBucket: "myfirstappomg.appspot.com",
+            messagingSenderId: "363745421475",
+            appId: "1:363745421475:web:edd3ba776a966809797716"
+        };
+        // Initialize Firebase
+        firebase.initializeApp(firebaseConfig);
 
+        var database = firebase.database();
+        var connectionsRef = database.ref("/connections");
+        var connectedRef = database.ref(".info/connected");
+
+        var employName = "";
+        var employRole = "";
+        var employStartDate = "";
+        var employRate = "";
+
+        $("#submit-button").on("click", function (event) {
+            event.preventDefault();
+            sendToFirebase();
+        });
+
+        function sendToFirebase() {
+
+            // 1 - GET TEXT VALUE FROM INPUT FIELDS
+            var newTrainName = $("#train-name-input").val().trim();
+            var newTrainDest = $("#train-destination-input").val().trim();
+            var firstTrainTime = $("#first-train-time-input").val().trim();
+            var frequency = $("#train-frequency-input").val().trim();
+
+            console.log(newTrainName + " to " + newTrainDest);
+            console.log("First train at " + firstTrainTime + " then every " + frequency + " mins");
+
+            // FOR FIREBASE
+            database.ref().push({
+                name: newTrainName,
+                destination: newTrainDest,
+                firsttime: firstTrainTime,
+                frequency: frequency,
+                dateAdded: firebase.database.ServerValue.TIMESTAMP
+            })
+        };
 
     </script>
 
