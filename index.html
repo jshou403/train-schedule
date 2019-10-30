@@ -200,19 +200,36 @@
             ////////////////////
 
             // Current time converted to military format
-            var currentTime = moment().format("HH:mm");
-            console.log("Military Time: " + currentTime);
+            var currentTime = moment().format("HHmm");
+            console.log("currentTime: " + currentTime);
+            console.log("sv.firsttime: " + sv.firsttime);
+            console.log("sv.frequency: " + sv.frequency);
+
 
             // Math for Next Train Time
 
+            // Convert difference of current time and first time to minutes
+            var timeDiff = moment().diff(sv.firsttime, "minutes"); 
+            console.log("timeDiff in mins: " + timeDiff); 
+
+            var timeRemainder = timeDiff % sv.frequency; 
+            console.log("timeRemainder: " + timeRemainder);
+
+            var minsAway = sv.frequency - timeRemainder;
+            console.log("minsAway: " + minsAway); 
+
+            var nextArrival = currentTime.add(minsAway, "minutes");
+            console.log("current time: " + currentTime);
+            console.log("nextArrival: " + nextArrival);
+
             var newTdNextTrain = $("<td>");
-            newTdNextTrain.text("99:99");
+            // newTdNextTrain.text("99:99");
+            newTdNextTrain.append(nextArrival);
             newTr.append(newTdNextTrain);
 
-            // Math for Mins Away of Next Train
-
             var newTdMinsAway = $("<td>");
-            newTdMinsAway.text("X Mins");
+            // newTdMinsAway.text("X Mins");
+            newTdMinsAway.append(minsAway + " mins");
             newTr.append(newTdMinsAway);
 
             $("tbody").append(newTr);
