@@ -205,7 +205,6 @@
             console.log("sv.firsttime: " + sv.firsttime);
             console.log("sv.frequency: " + sv.frequency);
 
-
             // Math for Next Train Time
 
             // Convert difference of current time and first time to minutes
@@ -218,7 +217,7 @@
             var minsAway = sv.frequency - timeRemainder;
             console.log("minsAway: " + minsAway); 
 
-            var nextArrival = currentTime.add(minsAway, "minutes");
+            var nextArrival = moment().add(minsAway,"minutes").format("HH:mm");
             console.log("current time: " + currentTime);
             console.log("nextArrival: " + nextArrival);
 
