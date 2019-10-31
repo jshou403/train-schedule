@@ -178,10 +178,10 @@
         database.ref().on("child_added", function (snapshot) {
             var sv = snapshot.val();
 
-            console.log(sv.name);
-            console.log(sv.destination);
-            console.log(sv.firsttime);
-            console.log(sv.frequency);
+            console.log("sv.name = " + sv.name);
+            console.log("sv.destination = " + sv.destination);
+            console.log("sv.firsttime = " + sv.firsttime);
+            console.log("sv.frequency = " + sv.frequency + " mins");
 
             var newTr = $("<tr>");
 
@@ -200,15 +200,17 @@
             ////////////////////
 
             // Current time converted to military format
-            var currentTime = moment().format("HHmm");
-            console.log("currentTime: " + currentTime);
-            console.log("sv.firsttime: " + sv.firsttime);
-            console.log("sv.frequency: " + sv.frequency);
+            var currentTime = moment();
+            console.log("currentTime: " + currentTime.format("HH:mm"));
+            console.log("First Train Time from Firebase: " + sv.firsttime);
+            console.log("Train Frequency from Firebase: " + sv.frequency);
 
-            // Math for Next Train Time
+            // First time (pushed back one year)
+            var firstTimeConverted = moment(sv.firsttime, "HHmm").subtract(1, "years");
+            console.log("firstTimeConverted: " + firstTimeConverted); 
 
             // Convert difference of current time and first time to minutes
-            var timeDiff = moment().diff(sv.firsttime, "minutes"); 
+            var timeDiff = moment().diff(firstTimeConverted, "minutes"); 
             console.log("timeDiff in mins: " + timeDiff); 
 
             var timeRemainder = timeDiff % sv.frequency; 
@@ -218,7 +220,6 @@
             console.log("minsAway: " + minsAway); 
 
             var nextArrival = moment().add(minsAway,"minutes").format("HH:mm");
-            console.log("current time: " + currentTime);
             console.log("nextArrival: " + nextArrival);
 
             var newTdNextTrain = $("<td>");
