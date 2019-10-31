@@ -162,8 +162,11 @@
             var firstTrainTime = $("#first-train-time-input").val().trim();
             var frequency = $("#train-frequency-input").val().trim();
 
+            console.log("----- New Train Added by Operator -----");
             console.log(newTrainName + " to " + newTrainDest);
             console.log("First train at " + firstTrainTime + " then every " + frequency + " mins");
+            console.log("----- --------------------------- -----");
+
 
             // FOR FIREBASE
             database.ref().push({
@@ -178,28 +181,43 @@
         database.ref().on("child_added", function (snapshot) {
             var sv = snapshot.val();
 
+            console.log("----- Info from Firebase -----");
             console.log("sv.name = " + sv.name);
             console.log("sv.destination = " + sv.destination);
             console.log("sv.firsttime = " + sv.firsttime);
             console.log("sv.frequency = " + sv.frequency + " mins");
 
+            // Created new row to populate new train information
             var newTr = $("<tr>");
 
+            // Created new table call to populate CARRIER NAME
+            // Added carrier name info from Firebase to new table cell
+            // Appended new table cell to new row
             var newTdCarrier = $("<td>");
             newTdCarrier.text(sv.name);
             newTr.append(newTdCarrier);
 
+            // Created new table call to populate TRAIN DESTINATION
+            // Added train destation info from Firebase to new table cell
+            // Appended new table cell to new row
             var newTdDestination = $("<td>");
             newTdDestination.text(sv.destination);
             newTr.append(newTdDestination);
 
+            // Created new table call to populate TRAIN FREQUENCY
+            // Added train frequency info from Firebase to new table cell
+            // Appended new table cell to new row
             var newTdFreq = $("<td>");
             newTdFreq.text(sv.frequency);
             newTr.append(newTdFreq);
 
-            ////////////////////
+            //////////////////// START
+            // Moment.js to Calculations for:  
+            // 1) Next Train Arrival Time and 2) Mins Away
 
-            // Current time converted to military format
+            console.log("----- Calculations -----");
+
+            // Current time in military format
             var currentTime = moment();
             console.log("currentTime: " + currentTime.format("HH:mm"));
             console.log("First Train Time from Firebase: " + sv.firsttime);
@@ -207,31 +225,50 @@
 
             // First time (pushed back one year)
             var firstTimeConverted = moment(sv.firsttime, "HHmm").subtract(1, "years");
-            console.log("firstTimeConverted: " + firstTimeConverted); 
+            console.log("firstTimeConverted: " + firstTimeConverted);
 
-            // Convert difference of current time and first time to minutes
-            var timeDiff = moment().diff(firstTimeConverted, "minutes"); 
-            console.log("timeDiff in mins: " + timeDiff); 
+            // Convert difference of current time and first train time to minutes
+            var timeDiff = moment().diff(firstTimeConverted, "minutes");
+            console.log("timeDiff in mins: " + timeDiff);
 
-            var timeRemainder = timeDiff % sv.frequency; 
+            // Time apart 
+            var timeRemainder = timeDiff % sv.frequency;
             console.log("timeRemainder: " + timeRemainder);
 
-            var minsAway = sv.frequency - timeRemainder;
-            console.log("minsAway: " + minsAway); 
+            console.log("----- Calculated -----");
 
-            var nextArrival = moment().add(minsAway,"minutes").format("HH:mm");
+            console.log("Current Time = " + currentTime.format("HH:mm"));
+
+            // 1) Calculate how many minutes away the next train is
+            var minsAway = sv.frequency - timeRemainder;
+            console.log("minsAway: " + minsAway);
+
+            // 2) Calculated time of the next train
+            var nextArrival = moment().add(minsAway, "minutes").format("HH:mm");
             console.log("nextArrival: " + nextArrival);
 
+            console.log("----- DONE -----");
+
+            //////////////////// END
+
+            // Created new table call to populate NEXT TRAIN ARRIVAL TIME
+            // Added carrier name from Firebase to new table cell
+            // Appended new table cell to new row
             var newTdNextTrain = $("<td>");
-            // newTdNextTrain.text("99:99");
+            // newTdNextTrain.text("99:99"); 
             newTdNextTrain.append(nextArrival);
             newTr.append(newTdNextTrain);
 
+
+            // Created new table call to populate MINS UNTIL NEXT TRAIN ARRIVAL
+            // Added carrier name from Firebase to new table cell
+            // Appended new table cell to new row
             var newTdMinsAway = $("<td>");
             // newTdMinsAway.text("X Mins");
             newTdMinsAway.append(minsAway + " mins");
             newTr.append(newTdMinsAway);
 
+            // Appended new row to current train schedule
             $("tbody").append(newTr);
 
         });
