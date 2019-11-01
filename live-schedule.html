@@ -28,9 +28,9 @@
         <div class="card card-title bg-light pt-4 pb-4 border-warning text-center mt-3">
             <h2>Philadelphia, PA</h2>
             <h6>Outbound Trains to Major East Coast Cities</h6>
-            <p class="mt-2 mb-0">Scheduler View (Current)
-                <a class="nav-link p-0" href="live-schedule.html">Go to Live View</a>
-            </p>
+            <nav>
+                <button id="refresh-btn" type="button" class="btn btn-warning">Update Times</button>
+            </nav>
         </div>
 
         <!-- Schedule Container -->
@@ -46,7 +46,6 @@
                             <th scope="col">Frequency (Mins)</th>
                             <th scope="col">Next Arrival</th>
                             <th scope="col">Minutes Away</th>
-                            <th scope="col">Added</th>
                         </tr>
                     </thead>
                     <tbody>
@@ -59,63 +58,6 @@
                         </tr> -->
                     </tbody>
                 </table>
-            </div>
-        </div>
-
-        <!-- Add Train Container -->
-        <div class="card border-warning mb-3">
-            <div class="card-header bg-warning">Schedule New Train</div>
-            <div class="card-body text-dark">
-                <!-- New Train Form -->
-                <form>
-
-                    <div class="form-group row">
-                        <!-- Label 1 - Train Carrier Name -->
-                        <label for="carrier-name" class="col-sm-2 col-form-label">Carrier</label>
-
-                        <!-- Input id = "train-name-input" -->
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="train-name-input">
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <!-- Label 2 - Destination -->
-                        <label for="train-destination" class="col-sm-2 col-form-label">Destination</label>
-
-                        <!-- Input id = "train-destination-input" -->
-                        <div class="col-sm-10">
-                            <input type="text" class="form-control" id="train-destination-input">
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <!-- Label 3 - First Train Time -->
-                        <label for="first-train-time" class="col-sm-2 col-form-label">First Train Time</label>
-
-                        <!-- Input id = "first-train-time-input" -->
-                        <div class="col-sm-10">
-                            <input type="number" class="form-control" id="first-train-time-input">
-
-                            <!-- Input format Instruction -->
-                            <small for="input-format" class="form-text text-muted">HHmm Military format</small>
-                        </div>
-                    </div>
-
-                    <div class="form-group row">
-                        <!-- Label 4 - Frequency -->
-                        <label for="train-frequency" class="col-sm-2 col-form-label">Frequency (Mins)</label>
-
-                        <!-- Input id = "train-frequency-input" -->
-                        <div class="col-sm-10">
-                            <input type="number" class="form-control" id="train-frequency-input">
-                        </div>
-                    </div>
-
-                    <!-- Submit Form Button -->
-                    <button id="submit-button" class="btn btn-warning">Add New</button>
-
-                </form>
             </div>
         </div>
 
@@ -275,6 +217,10 @@
             // Appended new row to current train schedule
             $("tbody").append(newTr);
 
+        });
+
+        $("#refresh-btn").on("click", function(){
+            location.reload();
         });
 
     </script>
