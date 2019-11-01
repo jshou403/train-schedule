@@ -5,3 +5,5 @@
 [Link] https://jshou403.github.io/train-schedule/
 
 [Languages] Moment.js, Firebase, Javascript, jQuery, HTML/CSS
+
+[MyComments] To improve functionality of the train scheduler, the input fields could be cleared once the information is submitted or there should be a confirmation request for the scheduler to check the info before the new train is added. Another is to convert the train frequency and time until next train from minutes to hours if over 59 minutes. A more complex improvement would be to having a train start and end date so that the train disappears from the schedule once it stops running, for example, a train that runs more in the winter to a ski resort. 
